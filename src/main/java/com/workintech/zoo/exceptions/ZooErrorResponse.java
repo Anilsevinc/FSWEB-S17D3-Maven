@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ZooErrorResponse {
 
-    private String message;
     private int status;
+    private String message;
     private long timestamp;
 }

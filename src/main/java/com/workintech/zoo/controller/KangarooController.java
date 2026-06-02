@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/workintech/kangaroos")
+@RequestMapping("/kangaroos")
 public class KangarooController {
 
-    private Map<Long, Kangaroo> kangaroos;
+    private Map<Integer, Kangaroo> kangaroos;
 
     @PostConstruct
     public void init() {
@@ -27,48 +27,50 @@ public class KangarooController {
     }
 
     @GetMapping("/{id}")
-    public Kangaroo findById(@PathVariable Long id) {
+    public Kangaroo findById(@PathVariable int id) {
 
         if (!kangaroos.containsKey(id)) {
-            throw new ZooException(
-                    "Kangaroo not found with id: " + id,
-                    HttpStatus.NOT_FOUND
-            );
+            throw new ZooException("Kangaroo not found: " + id, HttpStatus.NOT_FOUND);
         }
 
         return kangaroos.get(id);
     }
-
     @PostMapping
     public Kangaroo save(@RequestBody Kangaroo kangaroo) {
+
+        if (kangaroo == null ||
+                kangaroo.getName() == null ||
+                kangaroo.getId() <= 0) {
+
+            throw new ZooException(
+                    "Invalid Kangaroo data",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
         kangaroos.put(kangaroo.getId(), kangaroo);
         return kangaroo;
     }
 
     @PutMapping("/{id}")
-    public Kangaroo update(@PathVariable Long id,
+    public Kangaroo update(@PathVariable int id,
                            @RequestBody Kangaroo kangaroo) {
 
         if (!kangaroos.containsKey(id)) {
-            throw new ZooException(
-                    "Kangaroo not found with id: " + id,
-                    HttpStatus.NOT_FOUND
-            );
+            throw new ZooException("Kangaroo not found: " + id, HttpStatus.NOT_FOUND);
         }
 
         kangaroos.put(id, kangaroo);
         return kangaroo;
-
     }
 
     @DeleteMapping("/{id}")
-    public Kangaroo delete(@PathVariable Long id) {
+    public Kangaroo delete(@PathVariable int id) {
+
         if (!kangaroos.containsKey(id)) {
-            throw new ZooException(
-                    "Kangaroo not found with id: " + id,
-                    HttpStatus.NOT_FOUND
-            );
+            throw new ZooException("Kangaroo not found: " + id, HttpStatus.NOT_FOUND);
         }
+
         return kangaroos.remove(id);
     }
 }

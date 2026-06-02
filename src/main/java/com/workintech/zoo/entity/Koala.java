@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Koala {
 
-    private Long id;
+    private int id;
     private String name;
-    private Double weight;
-    private Integer sleepHour;
+    private double sleepHour;
+    private double weight;
     private String gender;
 }

@@ -11,30 +11,30 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ZooGlobalExceptionHandler {
 
     @ExceptionHandler(ZooException.class)
-    public ResponseEntity<ZooErrorResponse> handleException(ZooException exception) {
+    public ResponseEntity<ZooErrorResponse> handleZooException(ZooException ex) {
 
-        log.error(exception.getMessage());
+        log.error(ex.getMessage());
 
-        ZooErrorResponse errorResponse = new ZooErrorResponse(
-                exception.getMessage(),
-                exception.getStatus().value(),
+        ZooErrorResponse response = new ZooErrorResponse(
+                ex.getHttpStatus().value(),   // 🔥 FIX BURASI
+                ex.getMessage(),
                 System.currentTimeMillis()
         );
 
-        return new ResponseEntity<>(errorResponse, exception.getStatus());
+        return new ResponseEntity<>(response, ex.getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ZooErrorResponse> handleException(Exception exception) {
+    public ResponseEntity<ZooErrorResponse> handleGeneric(Exception ex) {
 
-        log.error(exception.getMessage());
+        log.error(ex.getMessage());
 
-        ZooErrorResponse errorResponse = new ZooErrorResponse(
-                exception.getMessage(),
+        ZooErrorResponse response = new ZooErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
                 System.currentTimeMillis()
         );
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

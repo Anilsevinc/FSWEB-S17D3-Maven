@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/workintech/koalas")
+@RequestMapping("/koalas")   //
 public class KoalaController {
 
-    private Map<Long, Koala> koalas;
+    private Map<Integer, Koala> koalas;
 
     @PostConstruct
     public void init() {
@@ -27,13 +27,10 @@ public class KoalaController {
     }
 
     @GetMapping("/{id}")
-    public Koala findById(@PathVariable Long id) {
+    public Koala findById(@PathVariable int id) {
 
         if (!koalas.containsKey(id)) {
-            throw new ZooException(
-                    "Koala not found with id: " + id,
-                    HttpStatus.NOT_FOUND
-            );
+            throw new ZooException("Koala not found: " + id, HttpStatus.NOT_FOUND);
         }
 
         return koalas.get(id);
@@ -46,13 +43,11 @@ public class KoalaController {
     }
 
     @PutMapping("/{id}")
-    public Koala update(@PathVariable Long id,
+    public Koala update(@PathVariable int id,
                         @RequestBody Koala koala) {
+
         if (!koalas.containsKey(id)) {
-            throw new ZooException(
-                    "Koala not found with id: " + id,
-                    HttpStatus.NOT_FOUND
-            );
+            throw new ZooException("Koala not found: " + id, HttpStatus.NOT_FOUND);
         }
 
         koalas.put(id, koala);
@@ -60,13 +55,12 @@ public class KoalaController {
     }
 
     @DeleteMapping("/{id}")
-    public Koala delete(@PathVariable Long id) {
+    public Koala delete(@PathVariable int id) {
+
         if (!koalas.containsKey(id)) {
-            throw new ZooException(
-                    "Koala not found with id: " + id,
-                    HttpStatus.NOT_FOUND
-            );
+            throw new ZooException("Koala not found: " + id, HttpStatus.NOT_FOUND);
         }
+
         return koalas.remove(id);
     }
 }

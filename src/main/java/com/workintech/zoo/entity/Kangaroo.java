@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Kangaroo {
 
-    private Long id;
+    private int id;
     private String name;
-    private Double height;
-    private Double weight;
+    private double height;
+    private double weight;
     private String gender;
     private Boolean isAggressive;
 }
